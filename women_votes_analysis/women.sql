@@ -1,3 +1,6 @@
+
+-- Stworzenie pomocniczej tabeli women, zawierającej tylko wybrane dane o wynikach kobiet
+-- (Hilary Clinton i Carly Fiorina) oraz statystykach okręgów.
 create table women as (
 select 
 	pr.candidate,
@@ -25,17 +28,19 @@ order by pr.fraction_votes desc)
 
 select * from women 
 
+-- Oblieczenie percentyli 10, 75 oraz 90 z rozkładu procentu głosów
 select
 	percentile_disc(0.10) within group (order by w.fraction_votes) as p_10,
 	percentile_disc(0.75) within group (order by w.fraction_votes) as q3,
 	percentile_disc(0.90) within group (order by w.fraction_votes) as p_90
 from women w
 
+-- Statystyki dla głosów powyżej percentyla 75
 select *
 from women w
 where w.fraction_votes > 0.627
 
-
+-- Statystyki dla całego kraju:
 select * from counties c 
 where fips = 0
 -- age over 65 14.5
@@ -80,11 +85,11 @@ where fraction_votes > (select
 -- 16.6
 
 with over65 as (select age_over65 as usa_over65 from counties where fips = 0)
-select ((avg(age_over65) - over65.usa_over65)/over65.usa_over65)*100 as age_over65_diff from women w2 , over65
+select ((avg(age_over65) - o.usa_over65)/o.usa_over65)*100 as age_over65_diff from women w2 , over65 o
 where fraction_votes > (select	
 	percentile_disc(0.9) within group (order by w.fraction_votes) as q_90
 	from women w)
-group by over65.usa_over65
+group by o.usa_over65
 -- +14.39%
 
 
