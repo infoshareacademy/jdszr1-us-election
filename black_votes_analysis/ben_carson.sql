@@ -1,3 +1,6 @@
+-- Stworzenie pomocniczej tabeli ben_carson, zawierającej tylko wybrane dane o wynikach 
+-- jedynago czarnoskórego kandydata Bena Carsona oraz statystykach okręgów.
+
 create table ben_carson as (
 select 
 	pr.candidate,
@@ -25,18 +28,20 @@ order by pr.fraction_votes desc)
 
 select * from ben_carson bc 
 
+-- Oblieczenie percentyli 10, 75 oraz 90 z rozkładu procentu głosów
 select
 	percentile_disc(0.10) within group (order by bc.fraction_votes) as q_10,
 	percentile_disc(0.75) within group (order by bc.fraction_votes) as q3,
 	percentile_disc(0.90) within group (order by bc.fraction_votes) as q_90
 from ben_carson bc 
 
+-- Statystyki dla głosów powyżej percentyla 75
 select * 
 from ben_carson bc 
 where fraction_votes > 0.083
 
 
-
+-- Statystyki dla całego kraju:
 select * from counties c 
 where fips = 0
 -- age over 65 14.5
@@ -73,11 +78,11 @@ from ben_carson bc)
 --18.3
 
 with over65 as (select age_over65 as usa_over65 from counties where fips = 0)
-select ((avg(age_over65) - over65.usa_over65)/over65.usa_over65)*100 as age_over65_diff from ben_carson , over65
+select ((avg(age_over65) - o.usa_over65)/o.usa_over65)*100 as age_over65_diff from ben_carson , over65 o
 where fraction_votes > (select	
 	percentile_disc(0.9) within group (order by fraction_votes) as q_90
 	from ben_carson)
-group by over65.usa_over65
+group by o.usa_over65
 -- +25.97%
 
 
