@@ -24,3 +24,5 @@ primary_results - tabela zawierająca wyniki głosowania dla poszczególnych reg
 5. folder **women_votes_analysis**: analiza wyników kobiet (Hilary Clinton oraz Carly Fiorina) - plik **women.sql**, tworzący nową tabelę pomocniczą "women" oraz wykonujący na niej obliczenia; plik **women.xlsx** zawierający m.in. wykresy obrazujące zależności między wynikami głosowania a statystykami demograficznymi.
 
 6. **Bernie_Sanders.sql** - plik z analizą wyników głosowania dla kandydata Bernie_Sanders oraz **Bernie_Sanders.xls** - prezentacja wyników analizy / wniosków.
+
+7. **US_election_GP.sql** - plik z analizą wyników Donalda Trumpa oraz analizą demokraci vs. republikanie.
