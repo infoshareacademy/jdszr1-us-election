@@ -1,211 +1,4 @@
-CREATE database us_election;
 
-
-
-CREATE TABLE county_facts (
-    fips INTEGER PRIMARY KEY,
-    area_name TEXT,
-    state_abbreviation TEXT,
-    PST045214 INTEGER,
-    PST040210 INTEGER,
-    PST120214 NUMERIC,
-    POP010210 INTEGER,
-    AGE135214 NUMERIC,
-    AGE295214 NUMERIC,
-    AGE775214 NUMERIC,
-    SEX255214 NUMERIC,
-    RHI125214 NUMERIC,  
-    RHI225214 NUMERIC,
-    RHI325214 NUMERIC,
-    RHI425214 NUMERIC,
-    RHI525214 NUMERIC,
-    RHI625214 NUMERIC,
-    RHI725214 NUMERIC,
-    RHI825214 NUMERIC,
-    POP715213 NUMERIC,
-    POP645213 NUMERIC,
-    POP815213 NUMERIC,
-    EDU635213 NUMERIC,
-    EDU685213 NUMERIC,
-    VET605213 INTEGER,
-    LFE305213 NUMERIC,
-    HSG010214 INTEGER,
-    HSG445213 NUMERIC,
-    HSG096213 NUMERIC,
-    HSG495213 INTEGER,
-    HSD410213 INTEGER,
-    HSD310213 NUMERIC,
-    INC910213 INTEGER,
-    INC110213 INTEGER,
-    PVY020213 NUMERIC,
-    BZA010213 INTEGER,
-    BZA110213 INTEGER,
-    BZA115213 NUMERIC,
-    NES010213 INTEGER,
-    SBO001207 INTEGER,
-    SBO315207 NUMERIC,
-    SBO115207 NUMERIC,
-    SBO215207 NUMERIC,
-    SBO515207 NUMERIC,
-    SBO415207 NUMERIC,
-    SBO015207 NUMERIC,
-    MAN450207 INTEGER,
-    WTN220207 INTEGER,
-    RTN130207 INTEGER,
-    RTN131207 INTEGER,
-    AFN120207 INTEGER,
-    BPS030214 INTEGER,
-    LND110210 NUMERIC,
-    POP060210 NUMERIC);
-   
-   
-CREATE TABLE county_facts_dictionary(
-    column_name TEXT,
-    description TEXT);
-   
-
-
-CREATE TABLE primary_results (
-    state TEXT,
-    state_abbreviation TEXT,
-    county TEXT,
-    fips INTEGER,
-    party TEXT,
-    candidate TEXT,
-    votes INTEGER,
-    fraction_votes NUMERIC);
-   
-   select * from primary_results;
-  select * from county_facts_dictionary ;
-  select * from county_facts;
- select * from counties;
- 
- 
- - county_facts_dictionary definition
-
-CREATE TABLE county_facts_dictionary(
-    column_name TEXT,
-    description TEXT);
-    
-
-
--- county_facts definition
-
-CREATE TABLE county_facts (
-    fips INTEGER PRIMARY KEY,
-    area_name TEXT,
-    state_abbreviation TEXT,
-    PST045214 INTEGER,
-    PST040210 INTEGER,
-    PST120214 NUMERIC,
-    POP010210 INTEGER,
-    AGE135214 NUMERIC,
-    AGE295214 NUMERIC,
-    AGE775214 NUMERIC,
-    SEX255214 NUMERIC,
-    RHI125214 NUMERIC,
-    RHI225214 NUMERIC,
-    RHI325214 NUMERIC,
-    RHI425214 NUMERIC,
-    RHI525214 NUMERIC,
-    RHI625214 NUMERIC,
-    RHI725214 NUMERIC,
-    RHI825214 NUMERIC,
-    POP715213 NUMERIC,
-    POP645213 NUMERIC,
-    POP815213 NUMERIC,
-    EDU635213 NUMERIC,
-    EDU685213 NUMERIC,
-    VET605213 INTEGER,
-    LFE305213 NUMERIC,
-    HSG010214 INTEGER,
-    HSG445213 NUMERIC,
-    HSG096213 NUMERIC,
-    HSG495213 INTEGER,
-    HSD410213 INTEGER,
-    HSD310213 NUMERIC,
-    INC910213 INTEGER,
-    INC110213 INTEGER,
-    PVY020213 NUMERIC,
-    BZA010213 INTEGER,
-    BZA110213 INTEGER,
-    BZA115213 NUMERIC,
-    NES010213 INTEGER,
-    SBO001207 INTEGER,
-    SBO315207 NUMERIC,
-    SBO115207 NUMERIC,
-    SBO215207 NUMERIC,
-    SBO515207 NUMERIC,
-    SBO415207 NUMERIC,
-    SBO015207 NUMERIC,
-    MAN450207 INTEGER,
-    WTN220207 INTEGER,
-    RTN130207 INTEGER,
-    RTN131207 INTEGER,
-    AFN120207 INTEGER,
-    BPS030214 INTEGER,
-    LND110210 NUMERIC,
-    POP060210 NUMERIC);
-    
-   
- -- primary_results definition
-
-CREATE TABLE primary_results (
-    state TEXT,
-    state_abbreviation TEXT,
-    county TEXT,
-    fips INTEGER,
-    party TEXT,
-    candidate TEXT,
-    votes INTEGER,
-    fraction_votes NUMERIC);  
-   
-select * from county_facts cf 
-select * from primary_results pr 
-   
-select distinct(candidate) from primary_results pr 
-
-
---Stworzenie nowej tabeli counties, będącej uproszczeniem tabeli county_facts
-
-CREATE TABLE counties as (select
-    fips,
-    area_name,
-    state_abbreviation,
-    PST045214 as population,
-    AGE775214 as age_over65,
-    SEX255214 as female,
-    RHI125214 as white,
-    RHI225214 as black,
-    RHI325214 as indian_or_alaska,
-    RHI425214 as asian,
-    RHI525214 as hawaii_and_pacific,
-    RHI625214 as many_races,
-    (RHI225214 + RHI325214 + RHI425214 + RHI525214 + RHI625214)::numeric as not_white,
-    RHI725214 as hispanic_latino,
-    RHI825214 as white_not_hispanic_or_latino,
-    POP645213 as foreign_born,
-    POP815213 as other_language_home,
-    EDU635213 as education_highschool_or_higher,
-    EDU685213 as education_bachelor_or_higher,
-    VET605213 as veterans,
-    INC910213 as income_per_capita_12months,
-    INC110213 as income_household_median
-   from county_facts);
-  
-select * from counties;
-
-
--- Utworzenie tabeli candidates, zawierającej dane o kandydatach
-  
-  create table candidates (
-  	candidate text,
-  	party text,
-  	gender text,
-  	rase text,
-  	year_of_birth int,
-  	age_2016 int  );
-  
  
   
  
@@ -569,7 +362,7 @@ select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from prim
   											LEFT  join counties  on primary_results.fips = counties .fips   
   																where	candidate ilike 'Donald%' 
   																and black > ( select percentile_disc( 0.75) within group (order by black)
-  										from counties)) , candidate as Precentyl_glowsow_05_dla_kandydata,
+  								from counties)) , candidate as Precentyl_glowsow_05_dla_kandydata,
   										( select percentile_disc( 0.75) within group (order by black) as ilosc_czarnoskorych
   										
   													from counties)   													
@@ -654,23 +447,351 @@ select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from prim
          647|               1461|Donald Trump                      |                     2.4	
    	
    	
-   	
-   	
-   	
-   	
-   	
-   	
-   	
-   	
-  	
-  	
-  ------------Reublikanie- DEmokraci    
   
-  	select count(fips) from counties;
+   	
+   	Zadanie nr 2   	
+   	
+  	
+  	
+  ------------Reublikanie- DEmokraci  analiza ze wzgledu na liczbe ludnosi i wiek
   
-  		select count(fips) from primary_results pr ;
+  	select * from counties;
   
+  		select * from primary_results pr ;
   	
+  ---  analiza z uwagi na wielkoc miejscowoci(liczba ludnosci w okregach)
   	
+ 
+  
+---Analiza dla okregow o duzej liczebnosci (perc0.9)
+
+
+
+  	select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Dem%'
+  																--and		state_abbreviation  is not NULL
+  																and	population > ( select percentile_disc( 0.9) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.9) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Dem%'
+  				--and		state_abbreviation  is not NULL
+  				and	population > ( select percentile_disc( 0.9) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.5) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Dem%' ) 
+				
+  				group by party
+  	union 
+  	select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Rep%'
+  																
+  																and	population >( select percentile_disc( 0.9) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.9) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Rep%'
+  				and	population >( select percentile_disc( 0.9) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.5) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Rep%' ) 
+				
+  				group by party
+  
+ 
+  		liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_pop|
+------------|-------------------|-------------------------------|--------|
+         527|                883|Republican                     |  245829|
+         268|                484|Democrat                       |  245829|		
+  				
+  					
+  ----Analiza dla okregow o duzej liczebnosci (perc0.9)  gdzie bardzo chetnie oddawano glosy na kandydata z jednej partii
+  
+  
+         select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Dem%'
+  																--and		state_abbreviation  is not NULL
+  																and	population > ( select percentile_disc( 0.9) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.9) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Dem%'
+  				--and		state_abbreviation  is not NULL
+  				and	population > ( select percentile_disc( 0.9) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.9) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Dem%' ) 
+				
+  				group by party
+  	union 
+  	select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Rep%'
+  																
+  																and	population >( select percentile_disc( 0.9) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.9) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Rep%'
+  				and	population >( select percentile_disc( 0.9) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.9) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Rep%' ) 
+				
+  				group by party
+    --Wynik
+         
+  	liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_pop|
+------------|-------------------|-------------------------------|--------|
+         104|                883|Republican                     |  245829|
+          22|                484|Democrat                       |  245829|			
   	
+      --  W wiekszych okregach popularnoscia cieszyli sie republikanie 
+      
+        -- jak wyglada rozkad glosow w  malych okregach  (glosow wiecej niz mediana)
+      
+        select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Dem%'
+  																--and		state_abbreviation  is not NULL
+  																and	population < ( select percentile_disc( 0.1) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.1) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Dem%'
+  				--and		state_abbreviation  is not NULL
+  				and	population <( select percentile_disc( 0.1) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.5) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Dem%' ) 
+				
+  				group by party
+  	union 
+  	select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Rep%'
+  																
+  																and	population <( select percentile_disc( 0.1) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.1) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Rep%'
+  				and	population <( select percentile_disc( 0.1) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.5) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Rep%' ) 
+				
+  				group by party  
+  				
+  liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_pop|
+------------|-------------------|-------------------------------|--------|
+         238|                470|Democrat                       |    5202|
+         382|                841|Republican                     |    5202|
+         
+         
+         
+  				
+  				
+  				
+       -- jak wyglada rozkad glosow w  malych okregach  z wyrazna tendencja dla 1 z partii 
+          
+       select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Dem%'
+  																--and		state_abbreviation  is not NULL
+  																and	population < ( select percentile_disc( 0.1) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.1) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Dem%'
+  				--and		state_abbreviation  is not NULL
+  				and	population <( select percentile_disc( 0.1) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.9) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Dem%' ) 
+				
+  				group by party
+  	union 
+  	select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Rep%'
+  																
+  																and	population <( select percentile_disc( 0.1) within group (order by population)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.1) within group (order by population) as perc_pop	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Rep%'
+  				and	population <( select percentile_disc( 0.1) within group (order by population)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.9) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Rep%' ) 
+				
+  				group by party  
+  	--wynik
+  				
+  	liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_pop|
+------------|-------------------|-------------------------------|--------|
+         153|                841|Republican                     |    5202|
+          27|                470|Democrat                       |    5202|	
+          
+          
+    ---Wniosek  male okregi cieszyly sie bardzej wsrod democratow  jednak  jesli juz jakis okrag jest bardziej przychylny republikanom to oddaje \
+    ---- to liczba glosw jest b duza .  
+    
+          
+       ------alaniza z uwagi na wiek_ age_over65
+   -wyliczenie percentyli
+      select
+percentile_disc(array[0.1, 0.25,  0.5, 0.75, 0.9]) within group (order by age_over65 ) as
+KWanil_01_025_05_075_09
+from counties c     
+          
+     kwanil_01_025_05_075_09   |
+--------------------------|
+{12.2,14.7,17.2,19.8,23.5}|  
+
+-- analiza wg dwoch skrajnych percentyli dla wieku powyzej  65_lat   
+
+
+select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Dem%'
+  																--and		state_abbreviation  is not NULL
+  																and	age_over65  < ( select percentile_disc( 0.1) within group (order by age_over65 )
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.1) within group (order by age_over65 ) as perc_age	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Dem%'
+  				--and		state_abbreviation  is not NULL
+  				and	age_over65 <( select percentile_disc( 0.1) within group (order by age_over65)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.9) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Dem%' ) 
+				
+  				group by party
+  	union 
+  	select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Rep%'
+  																--and		state_abbreviation  is not NULL
+  																and	age_over65 <( select percentile_disc( 0.1) within group (order by age_over65)
+  																from counties)),																
+  																 party as Precentyl_glowsow_dla_partii,
+  															( select percentile_disc( 0.1) within group (order by age_over65) as perc_age	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Rep%'
+  				and	age_over65 <( select percentile_disc( 0.1) within group (order by age_over65)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.9) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Rep%' ) 
+				
+				group by party
+      
+				
+		Wynik			dla peercentyla glosow 05 
+       liczba_miast|ogolna_liczba_miast|precentyl_glowsow__dla_partii|perc_age|
+------------|-------------------|-------------------------------|--------|
+         563|               1044|Republican                     |    12.2|
+         271|                526|Democrat                       |    12.2|
+   
+      Wynik			dla peercentyla glosow 09
+      
+      liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_age|
+------------|-------------------|-------------------------------|--------|
+          48|                526|Democrat                       |    12.2|
+          87|               1044|Republican                     |    12.2|
+         
+     --- wniosek  dla okrgow  "mlodych"  glosy rozkladaja sie po rowno
+     
+          
+      
+       select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Dem%'
+  																--and		state_abbreviation  is not NULL
+  																and	age_over65  > ( select percentile_disc( 0.9) within group (order by age_over65 )
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.9) within group (order by age_over65 ) as perc_age	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Dem%'
+  				--and		state_abbreviation  is not NULL
+  				and	age_over65 >( select percentile_disc( 0.9) within group (order by age_over65)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.5) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Dem%' ) 
+				
+  				group by party
+  	union 
+  	select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from primary_results  
+  											LEFT  join counties  on primary_results.fips = counties .fips   
+  																where	party ilike 'Rep%'
+  																--and		state_abbreviation  is not NULL
+  																and	age_over65 >( select percentile_disc( 0.9) within group (order by age_over65)
+  																from counties)),																
+  																 party as Precentyl_glowsow_05_dla_partii,
+  															( select percentile_disc( 0.9) within group (order by age_over65) as perc_age	from counties)   
+													
+  	from primary_results  
+  	LEFT join counties  on primary_results.fips = counties .fips   
+  	where	party ilike 'Rep%'
+  				and	age_over65 >( select percentile_disc( 0.9) within group (order by age_over65)
+  													from counties) 
+  				and fraction_votes >( select percentile_disc( 0.5) within group (order by fraction_votes ) 
+  									from primary_results where	party ilike 'Rep%' ) 
+				
+				group by party   
+          
+     dla miast ze srednia wieku dla perc 0.9  glosy perc 0.9
+          
+    liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_age|
+------------|-------------------|-------------------------------|--------|
+          17|                548|Democrat                       |    23.5|
+         148|               1043|Republican                     |    23.5|   
+         
+   dla miast ze srednia wieku dla perc 0.9  glosy perc 0.
+         
+  liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_age|
+------------|-------------------|-------------------------------|--------|
+         511|               1043|Republican                     |    23.5|
+         289|                548|Democrat                       |    23.5|       
+         
+ ---- Misata  ze spolecznoscie  w starszym wieku  lekko przychylaja   sie do demokratow  
+ 	---natomiast spora czesc miast gdzie dominuja przkonania dla republikanow bardzo duzy odsetek ludnosci na nich glosowal
+ 
+         
   	
