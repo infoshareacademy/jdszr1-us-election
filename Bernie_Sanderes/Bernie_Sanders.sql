@@ -25,11 +25,11 @@ select sum(votes)
 -- 11 827 861
 
 -- wyniki BS w 10 najlepszych stanach
-  select pr.state, sum(votes)
+select pr.state, sum(votes)
   from primary_results pr
  where pr.candidate = 'Bernie Sanders'
    and pr.fips not in ('36085', '46113', '36047')
-  group by pr.state 
+ group by pr.state 
  order by sum(votes) desc 
  limit 10;
 
@@ -47,9 +47,9 @@ select sum(votes)
 
 -- funkcja wyci¹gaj¹ca liczbê g³osów dla kandydata
 create or replace function f_candidate_all(kandydat varchar) returns table(
-	   candidate varchar, 
+	       candidate varchar, 
 	       party varchar,  
-	     s_votes int8
+	       s_votes int8
 )
 language sql as ' 
 	select pr.candidate, 
@@ -64,8 +64,8 @@ language sql as '
 
 -- funkcja wyci¹gaj¹ca liczbê g³osów dla partii danego kandydata
 create or replace function f_party_all(kandydat varchar) returns table( 
-	       party varchar,  
-	     s_votes int8
+	      party varchar,  
+	      s_votes int8
 )
 language sql as ' 
 	select pr.party, 
@@ -293,6 +293,7 @@ left join stany_z_najgorszym_wynikiem('Bernie Sanders') snw on trim(lower(pr.sta
 
 -- analiza zmiennych demograficznych z tabeli counties c dla BS, Demokratów i Republikanów  (prezentacja xls)
 
+-- Bernie Sanders
 -- hrabstwa z najwyzszym wynikiem
 
 with hrabstwa_z_najwyzszym_wynikiem as ( with candidate_all as (
@@ -326,9 +327,8 @@ select pr.fips,
        pr.state_abbreviation, 
        pr.candidate, 
        pr.party
-order by
-	sum(pr.votes) desc
-limit 20)
+ order by sum(pr.votes) desc
+ limit 20)
 
 select c.area_name, 
 	   c.age_over65, 
@@ -419,9 +419,8 @@ select pr.fips,
        pr.state_abbreviation, 
        pr.candidate, 
        pr.party
-order by
-	sum(pr.votes) asc
-limit 100)
+ order by sum(pr.votes) asc
+ limit 100)
 
 select c.area_name, 
 	   c.age_over65, 
@@ -506,9 +505,8 @@ select pr.fips,
        pr.state, 
        pr.state_abbreviation, 
        pr.party
-order by
-	sum(pr.votes) desc
-limit 20)
+ order by sum(pr.votes) desc
+ limit 20)
 
 select c.area_name, 
 	   c.age_over65, 
@@ -590,9 +588,8 @@ select pr.fips,
        pr.state, 
        pr.state_abbreviation, 
        pr.party
-order by
-	sum(pr.votes) asc
-limit 100)
+ order by sum(pr.votes) asc
+ limit 100)
 
 select c.area_name, 
 	   c.age_over65, 
@@ -674,9 +671,8 @@ select pr.fips,
        pr.state, 
        pr.state_abbreviation, 
        pr.party
-order by
-	sum(pr.votes) desc
-limit 20)
+ order by sum(pr.votes) desc
+ limit 20)
 
 select c.area_name, 
 	   c.age_over65, 
@@ -758,9 +754,8 @@ select pr.fips,
        pr.state, 
        pr.state_abbreviation, 
        pr.party
-order by
-	sum(pr.votes) asc
-limit 100)
+ order by sum(pr.votes) asc
+ limit 100)
 
 select c.area_name, 
 	   c.age_over65, 
