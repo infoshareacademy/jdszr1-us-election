@@ -25,7 +25,8 @@ select sum(votes)
 -- 11 827 861
 
 -- wyniki BS w 10 najlepszych stanach
-select pr.state, sum(votes)
+select pr.state, 
+	   sum(votes)
   from primary_results pr
  where pr.candidate = 'Bernie Sanders'
    and pr.fips not in ('36085', '46113', '36047')
