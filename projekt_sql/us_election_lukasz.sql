@@ -1,4 +1,4 @@
--- najwiêkszy odsetek g³osów Missisipi, Alabama, South Carolina, Virginia, Georgia, Alabama, Tennessee, 
+-- najwiÃªkszy odsetek gÂ³osÃ³w Missisipi, Alabama, South Carolina, Virginia, Georgia, Alabama, Tennessee, 
 select state, county, votes, fraction_votes from primary_results pr 
 where candidate ilike '%Clinton' 
 group by 1, 2, 3 , 4
@@ -20,7 +20,7 @@ order by 2
 select sum(votes) as liczba_calkowita_glosow from primary_results pr 
 where candidate ilike '%Clinton' -- 15 692 452 glosy
 
---liczba glosow ca³kowita w USA
+--liczba glosow caÂ³kowita w USA
 select sum(votes) from primary_results pr --56 759 187 glosy
 
 --ilosc miast z P25, P50 , P75
@@ -28,43 +28,43 @@ select percentile_disc(0.25) within group (order by fraction_votes ) from primar
 where candidate ilike '%Clinton' -- 0.356
 
 select count(county) from primary_results pr 
-where candidate ilike '%Clinton' and fraction_votes < 0.356 --1 046 miast, gdzie jej udzial by³ <25%
+where candidate ilike '%Clinton' and fraction_votes < 0.356 --1 046 miast, gdzie jej udzial byÂ³ <25%
 
 select percentile_disc(0.50) within group (order by fraction_votes ) from primary_results pr 
 where candidate ilike '%Clinton' -- 0.47
 
 select count(county) from primary_results pr 
-where candidate ilike '%Clinton' and fraction_votes < 0.47 and fraction_votes >= 0.356 --1 055 miast, gdzie jej udzial by³ >25% i <50%
+where candidate ilike '%Clinton' and fraction_votes < 0.47 and fraction_votes >= 0.356 --1 055 miast, gdzie jej udzial byÂ³ >25% i <50%
 
 select percentile_disc(0.75) within group (order by fraction_votes ) from primary_results pr 
 where candidate ilike '%Clinton' -- 0.577
 
 select count(county) from primary_results pr 
-where candidate ilike '%Clinton' and fraction_votes < 0.577 and fraction_votes >= 0.47 --1 049 miast, gdzie jej udzial by³ >50% i <75%
+where candidate ilike '%Clinton' and fraction_votes < 0.577 and fraction_votes >= 0.47 --1 049 miast, gdzie jej udzial byÂ³ >50% i <75%
 
 select count(county) from primary_results pr 
-where candidate ilike '%Clinton' and fraction_votes >= 0.577  --1 055 miast, gdzie jej udzial by³ >75%
+where candidate ilike '%Clinton' and fraction_votes >= 0.577  --1 055 miast, gdzie jej udzial byÂ³ >75%
 
---stany, w ktorych procentowo miala najwiêkszy udzial w glosach Nebraska, Maine, Missipi, Alabama, Georgia
+--stany, w ktorych procentowo miala najwiÃªkszy udzial w glosach Nebraska, Maine, Missipi, Alabama, Georgia
 select state , max(fraction_votes) from primary_results pr 
 where candidate ilike '%Clinton' 
 group by 1
 order by 2 desc
 
--- zebranie danych demograficznych z podzia³em na 51 stanow
+-- zebranie danych demograficznych z podziaÂ³em na 51 stanow
 select * from counties c 
 where state_abbreviation = '' and fips > 0
 order by area_name  
 
--- zebranie danych demograficznych ca³kowitych dla USA
+-- zebranie danych demograficznych caÂ³kowitych dla USA
 select * from counties c 
 where state_abbreviation = '' and fips < 1
 order by area_name  
 ---------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------
---Wnioski po analize powy¿szych tabel - porównianie 51 stanów do wartoœci USA global.
+--Wnioski po analize powyÂ¿szych tabel - porÃ³wnianie 51 stanÃ³w do wartoÅ“ci USA global.
 
---1.Analiza stanow, gdzie liczba osob >65 roku zycna jest powy¿ej œredniej w USA 14.5
+--1.Analiza stanow, gdzie liczba osob >65 roku zycna jest powyÂ¿ej Å“redniej w USA 14.5
 
 --stany w ktorych jest najwiecej osob >65 i udzial w glosach Hilary >75% i c.age_over65>14.5 (srednia dla calych usa)
 select c.area_name , c.age_over65,sum(p.votes)  from counties c 
@@ -88,7 +88,7 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.age_over65>14.5
 
---2.Analiza stanow, gdzie liczba kobiet jest powy¿ej sredniej w USA 50.8
+--2.Analiza stanow, gdzie liczba kobiet jest powyÂ¿ej sredniej w USA 50.8
 
 --stany w ktorych jest najwiecej kobiet i udzial w glosach Hilary >75% i female>50.8 (srednia dla calych usa)
 select c.area_name , c.female,sum(p.votes)  from counties c 
@@ -112,9 +112,9 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.female <50.8
 
---3.Analiza stanow, gdzie liczba czarnoskórej ludnoœci jest powy¿ej sredniej w USA 13.2
+--3.Analiza stanow, gdzie liczba czarnoskÃ³rej ludnoÅ“ci jest powyÂ¿ej sredniej w USA 13.2
 
---stany w ktorych jest najwiecej czarnoskórych i udzial w glosach Hilary >75% i female>50.8 (srednia dla calych usa)
+--stany w ktorych jest najwiecej czarnoskÃ³rych i udzial w glosach Hilary >75% i female>50.8 (srednia dla calych usa)
 select c.area_name , c.black,sum(p.votes)  from counties c 
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes >0.577 and c.black >13.2
@@ -125,7 +125,7 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes >0.577 and c.black >13.2
 
---stany w ktorych jest najmniej czanoskórych osób i udzial w glosach Hilary <25% i black<13.2 (srednia dla calych usa)
+--stany w ktorych jest najmniej czanoskÃ³rych osÃ³b i udzial w glosach Hilary <25% i black<13.2 (srednia dla calych usa)
 select c.area_name , c.black,sum(p.votes)  from counties c 
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.black <13.2
@@ -136,7 +136,7 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.black <13.2
 
---4.Analiza stanow, gdzie liczba latynoskiej ludnoœci jest powy¿ej sredniej w USA 17
+--4.Analiza stanow, gdzie liczba latynoskiej ludnoÅ“ci jest powyÂ¿ej sredniej w USA 17
 
 --stany w ktorych jest najwiecej latynoskiej i udzial w glosach Hilary >75% i latino>17 (srednia dla calych usa)
 select c.area_name , c.hispanic_latino ,sum(p.votes)  from counties c 
@@ -149,7 +149,7 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes >0.577 and c.hispanic_latino >17.0
 
---stany w ktorych jest najmniej latynoskich osób i udzial w glosach Hilary <25% i latino<17 (srednia dla calych usa)
+--stany w ktorych jest najmniej latynoskich osÃ³b i udzial w glosach Hilary <25% i latino<17 (srednia dla calych usa)
 select c.area_name , c.hispanic_latino ,sum(p.votes)  from counties c 
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.hispanic_latino <17
@@ -161,7 +161,7 @@ join primary_results as p on c.area_name =p.state
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.hispanic_latino <17
 
 
---5.Analiza stanow, gdzie liczba obcojezycznej ludnoœci jest powy¿ej sredniej w USA 21
+--5.Analiza stanow, gdzie liczba obcojezycznej ludnoÅ“ci jest powyÂ¿ej sredniej w USA 21
 
 --stany w ktorych jest najwiecej naplywowej ludnosci i udzial w glosach Hilary >75% i foreign born>21 (srednia dla calych usa)
 select c.area_name , c.foreign_born ,sum(p.votes)  from counties c 
@@ -185,7 +185,7 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.foreign_born <21
 
---6.Analiza stanow, gdzie liczba wyksztalconej ludnoœci  jest powy¿ej sredniej w USA 86
+--6.Analiza stanow, gdzie liczba wyksztalconej ludnoÅ“ci  jest powyÂ¿ej sredniej w USA 86
 
 --stany w ktorych jest najwiecej wyksztalconej ludnosci i udzial w glosach Hilary >75% i education_highschool>86 (srednia dla calych usa)
 select c.area_name , c.education_highschool_or_higher ,sum(p.votes)  from counties c 
@@ -198,7 +198,7 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes >0.577 and c.education_highschool_or_higher >86.0
 
---stany w ktorych jest najmniej wykszta³conej ludnosci i udzial w glosach Hilary <25% i education_highschool<86 (srednia dla calych usa)
+--stany w ktorych jest najmniej wyksztaÂ³conej ludnosci i udzial w glosach Hilary <25% i education_highschool<86 (srednia dla calych usa)
 select c.area_name , c.education_highschool_or_higher ,sum(p.votes)  from counties c 
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.education_highschool_or_higher <86
@@ -209,7 +209,7 @@ select sum(p.votes)  from counties c
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' and fraction_votes <0.356 and c.education_highschool_or_higher <86
 
---7.Lista stanow,gdzie s¹ spe³nione wszystki powy¿sze warunki - Stan NEW JERSEY
+--7.Lista stanow,gdzie sÂ¹ speÂ³nione wszystki powyÂ¿sze warunki - Stan NEW JERSEY
 select c.area_name ,p.fraction_votes, sum(p.votes)  from counties c 
 join primary_results as p on c.area_name =p.state 
 where c.state_abbreviation = '' and c.fips > 0 and p.candidate ilike '%Clinton' --and fraction_votes >0.577 
