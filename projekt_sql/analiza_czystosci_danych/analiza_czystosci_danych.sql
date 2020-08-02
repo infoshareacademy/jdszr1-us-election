@@ -1,46 +1,46 @@
 
---Analiza czystoœci danych projektu us_election -- opis:
--- wykonane zosta³y 4 kroki
+--Analiza czystoÅ“ci danych projektu us_election -- opis:
+-- wykonane zostaÂ³y 4 kroki
 --1) 
--- sprawdzenie licznoœci tabel -- licznoœci pola po ktorym bedziemy ³¹czyæ dwie tabele
--- => wniosek, z tabeli county_facts zosta³y wykasowane dane, to powoduje, ¿e w tabeli county_facts s¹ wartoœci, których nie ma w primary_results
--- => wniosek, w tabeli county_facts znajduj¹ siê wpisy, które nie s¹ wykorzystane w tabeli primary_results
+-- sprawdzenie licznoÅ“ci tabel -- licznoÅ“ci pola po ktorym bedziemy Â³Â¹czyÃ¦ dwie tabele
+-- => wniosek, z tabeli county_facts zostaÂ³y wykasowane dane, to powoduje, Â¿e w tabeli county_facts sÂ¹ wartoÅ“ci, ktÃ³rych nie ma w primary_results
+-- => wniosek, w tabeli county_facts znajdujÂ¹ siÃª wpisy, ktÃ³re nie sÂ¹ wykorzystane w tabeli primary_results
 -- 2)
--- kontrola wartoœci null / pustych pól
+-- kontrola wartoÅ“ci null / pustych pÃ³l
 -- a)
--- jedno hrabstwo "New Hampshire" nie mia³o ¿adnej wartoœci w polu fips w tabeli primary_results pr (100 wierszy)
--- => zmiana w danych: uzupe³nienie danych fips w tabeli primary_results pr, danymi z tabeli county_facts cf
+-- jedno hrabstwo "New Hampshire" nie miaÂ³o Â¿adnej wartoÅ“ci w polu fips w tabeli primary_results pr (100 wierszy)
+-- => zmiana w danych: uzupeÂ³nienie danych fips w tabeli primary_results pr, danymi z tabeli county_facts cf
 -- b)
--- puste pola w kolumnie cf.state_abbreviation w tabeli counties, która powsta³a na bazie tabeli county_facts
--- puste pola wystêpuj¹ na poziomie stanów i dla US
--- pole jest uzupe³nione na poziomie hrabstw    
--- => zmiana w danych: zast¹pienie pustych pól wartoœci¹ "null"
+-- puste pola w kolumnie cf.state_abbreviation w tabeli counties, ktÃ³ra powstaÂ³a na bazie tabeli county_facts
+-- puste pola wystÃªpujÂ¹ na poziomie stanÃ³w i dla US
+-- pole jest uzupeÂ³nione na poziomie hrabstw    
+-- => zmiana w danych: zastÂ¹pienie pustych pÃ³l wartoÅ“ciÂ¹ "null"
 -- 3) 
 -- potwierdzenie poprawnosci typu danych liczbowych
 -- 4)
--- analiza poprawnoœci/spójnoœci danych wpisu w polu fips vs nazwy hrabstw
+-- analiza poprawnoÅ“ci/spÃ³jnoÅ“ci danych wpisu w polu fips vs nazwy hrabstw
 -- a)
--- weryfikacja spójnoœci danych fips w tabelach primary_results i counties
--- trzy niespójne przypisania pola fips vs nazwy hrabstwa (36085, 46113, 36047)
--- => zmiana: te wartoœci fips bêd¹ w trakcie analizy wykluczne
+-- weryfikacja spÃ³jnoÅ“ci danych fips w tabelach primary_results i counties
+-- trzy niespÃ³jne przypisania pola fips vs nazwy hrabstwa (36085, 46113, 36047)
+-- => zmiana: te wartoÅ“ci fips bÃªdÂ¹ w trakcie analizy wykluczne
 -- b)
--- ró¿nica w licznoœci unikatowych nazw hrabstw vs unikatowe wartoœci fips w obu analizowanych tabelach
--- (unikatowych wartoœci fips jest wiêcej ni¿ nazw hrabstw)
--- =>potwierdzenie tezy, ¿e wystêpuje kilka takich samych nazw hrabstw z ró¿nymi wartoœciami fips (takie same nazwy miejscowoœci)
+-- rÃ³Â¿nica w licznoÅ“ci unikatowych nazw hrabstw vs unikatowe wartoÅ“ci fips w obu analizowanych tabelach
+-- (unikatowych wartoÅ“ci fips jest wiÃªcej niÂ¿ nazw hrabstw)
+-- =>potwierdzenie tezy, Â¿e wystÃªpuje kilka takich samych nazw hrabstw z rÃ³Â¿nymi wartoÅ“ciami fips (takie same nazwy miejscowoÅ“ci)
 -- 5)
--- test czy wpisy siê nie powtarzaj¹ w tabeli primary_results pr
--- => dane nie powtarzaj¹ siê
+-- test czy wpisy siÃª nie powtarzajÂ¹ w tabeli primary_results pr
+-- => dane nie powtarzajÂ¹ siÃª
 
 -- Analiza:
 
 --1) 
 
--- licznoœci tabel -- licznoœci pola po ktorym bedziemy ³¹czyæ dwie tabele
+-- licznoÅ“ci tabel -- licznoÅ“ci pola po ktorym bedziemy Â³Â¹czyÃ¦ dwie tabele
  SELECT
 	*
 FROM
 	county_facts cf ;
--- fibs -- klucz g³ówny
+-- fibs -- klucz gÂ³Ã³wny
  SELECT
 	*
 FROM
@@ -50,7 +50,7 @@ SELECT
 	*
 FROM
 	primary_results pr ;
--- fibs -- klucz obcy(nieoznaczony - nie ma ustawionego powi¹zania)
+-- fibs -- klucz obcy(nieoznaczony - nie ma ustawionego powiÂ¹zania)
  SELECT
 	count(DISTINCT fips)
 FROM
@@ -61,9 +61,9 @@ FROM
 FROM
 	primary_results pr ;
 --4207
--- => wniosek, z tabeli county_facts zosta³y wykasowane dane, to powoduje, 
+-- => wniosek, z tabeli county_facts zostaÂ³y wykasowane dane, to powoduje, 
 
--- ¿e w tabeli county_facts s¹ wartoœci, których nie ma w primary_results
+-- Â¿e w tabeli county_facts sÂ¹ wartoÅ“ci, ktÃ³rych nie ma w primary_results
  SELECT
 	4207-3195;
 --1012 
@@ -99,12 +99,12 @@ EXCEPT
 
 SELECT
 	1410-397;
---1013 (ró¿nica o null)
--- => wniosek, w tabeli county_facts znajduj¹ siê wpisy, które nie s¹ wykorzystane w tabeli primary_results
+--1013 (rÃ³Â¿nica o null)
+-- => wniosek, w tabeli county_facts znajdujÂ¹ siÃª wpisy, ktÃ³re nie sÂ¹ wykorzystane w tabeli primary_results
 
 
 -- 2)
--- kontrola wartoœci null / pustych pól
+-- kontrola wartoÅ“ci null / pustych pÃ³l
 
 -- analiza tabeli primary_results
  SELECT
@@ -204,7 +204,7 @@ WHERE
 --0 --text
 -- select count(*) from primary_results pr where pr.votes like ''; --0 --int4
 
--- analiza tabeli counties, która powsta³a na bazie tabeli county_facts
+-- analiza tabeli counties, ktÃ³ra powstaÂ³a na bazie tabeli county_facts
  SELECT
 	*
 FROM
@@ -409,7 +409,7 @@ WHERE
 	pr.fips IS NULL;
 --100 
 
---jedno hrabstwo "New Hampshire" nie ma ¿adnej wartoœci w polu fips w tabeli primary_results pr (100 wierszy)
+--jedno hrabstwo "New Hampshire" nie ma Â¿adnej wartoÅ“ci w polu fips w tabeli primary_results pr (100 wierszy)
  SELECT
 	count(*)
 FROM
@@ -447,14 +447,14 @@ FROM
 	county_facts cf
 WHERE
 	cf.area_name LIKE '%New Hampshire%';
--- fips 33000 - tylko dla cza³ego stanu
+-- fips 33000 - tylko dla czaÂ³ego stanu
  SELECT
 	count(*)
 FROM
 	county_facts cf
 WHERE
 	cf.state_abbreviation LIKE '%NH%';
--- uzupe³nienie danych fips w tabeli primary_results pr, danymi z tabeli county_facts cf
+-- uzupeÂ³nienie danych fips w tabeli primary_results pr, danymi z tabeli county_facts cf
  UPDATE
 	primary_results pr
 SET
@@ -489,7 +489,7 @@ WHERE
 	prt.fips IS NULL ;
 -----------------------------------------------------------
 
--- puste pola w kolumnie cf.state_abbreviation w tabeli counties, która powsta³a na bazie tabeli county_facts
+-- puste pola w kolumnie cf.state_abbreviation w tabeli counties, ktÃ³ra powstaÂ³a na bazie tabeli county_facts
  SELECT
 	count(*)
 FROM
@@ -505,10 +505,10 @@ WHERE
 	cf.state_abbreviation LIKE '';
 
 -- fips area_name 0 United States 1000 Alabama 2000 Alaska 4000 Arizona 5000 Arkansas 6000 California 8000 Colorado 9000 Connecticut 10000 Delaware 11000 District OF Columbia 12000 Florida 13000 Georgia 15000 Hawaii 16000 Idaho 17000 Illinois 18000 Indiana 19000 Iowa 20000 Kansas 21000 Kentucky 22000 Louisiana 23000 Maine 24000 Maryland 25000 Massachusetts 26000 Michigan 27000 Minnesota 28000 Mississippi 29000 Missouri 30000 Montana 31000 Nebraska 32000 Nevada 33000 NEW Hampshire 34000 NEW Jersey 35000 NEW Mexico 36000 NEW York 37000 North Carolina 38000 North Dakota 39000 Ohio 40000 Oklahoma 41000 Oregon 42000 Pennsylvania 44000 Rhode Island 45000 South Carolina 46000 South Dakota 47000 Tennessee 48000 Texas 49000 Utah 50000 Vermont 51000 Virginia 53000 Washington 54000 West Virginia 55000 Wisconsin 56000 Wyoming
--- pole jest uzupe³nione na poziomie hrabstw 
--- puste pola wystêpuj¹ na poziomie stanów i dla US
+-- pole jest uzupeÂ³nione na poziomie hrabstw 
+-- puste pola wystÃªpujÂ¹ na poziomie stanÃ³w i dla US
 
--- zast¹pienie pustych pól wartoœci¹ "null"
+-- zastÂ¹pienie pustych pÃ³l wartoÅ“ciÂ¹ "null"
  UPDATE
 	counties cf
 SET
@@ -651,8 +651,8 @@ FROM
 
 
 -- 4)
--- analiza poprawnoœci/spójnoœci danych wpisu w polu fips vs nazwy hrabstw
--- weryfikacja spójnoœci danych fips w tabelach primary_results i counties
+-- analiza poprawnoÅ“ci/spÃ³jnoÅ“ci danych wpisu w polu fips vs nazwy hrabstw
+-- weryfikacja spÃ³jnoÅ“ci danych fips w tabelach primary_results i counties
  WITH pr_abb AS (
 SELECT
 	DISTINCT pr.fips, pr.county, lower(SUBSTRING (pr.county, 1, 4)) co
@@ -671,14 +671,14 @@ FROM
 WHERE
 	pra.fips = cna.fips
 	AND pra.co <> cna.an;
--- => wniosek trzy niespójne przypisania pola fips i nazwy hrabstwa 
---- te pola fips bêd¹ w trakcie analizy wykluczne
+-- => wniosek trzy niespÃ³jne przypisania pola fips i nazwy hrabstwa 
+--- te pola fips bÃªdÂ¹ w trakcie analizy wykluczne
 --36085	Staten Island	stat	36085	Richmond County	rich
 --46113	Oglala Lakota	ogla	46113	Shannon County	shan
 --36047	Brooklyn	    broo	36047	Kings County	king
--- => wystepuj¹ równie¿ nazwy miast wielokrotnie siê powtarzaj¹ce z ró¿nymi wielkoœciami fips 
+-- => wystepujÂ¹ rÃ³wnieÂ¿ nazwy miast wielokrotnie siÃª powtarzajÂ¹ce z rÃ³Â¿nymi wielkoÅ“ciami fips 
 
--- (s¹ to rózne miejscowoœci o tej samej nazwie) - bêd¹ brane pod uwagê w analizie
+-- (sÂ¹ to rÃ³zne miejscowoÅ“ci o tej samej nazwie) - bÃªdÂ¹ brane pod uwagÃª w analizie
  SELECT
 	count(DISTINCT county)
 FROM
@@ -718,7 +718,7 @@ WHERE
 	3195 - 1929;
 --1266 -- counties
 
--- => teza, w obu tabelach istniej¹ identyczne nazwy hrabstw, które maj¹ inny znacznik fips  
+-- => teza, w obu tabelach istniejÂ¹ identyczne nazwy hrabstw, ktÃ³re majÂ¹ inny znacznik fips  
  SELECT
 	count(county)
 FROM
@@ -774,7 +774,7 @@ WHERE
 	1692-426;
 --1266 => potwierdzenie tezy dla tabeli counties
 
------ test czy wpisy siê nie powtarzaj¹ w tabeli primary_results pr
+----- test czy wpisy siÃª nie powtarzajÂ¹ w tabeli primary_results pr
  SELECT
 	pr.fips,
 	pr.candidate,
@@ -839,7 +839,7 @@ WHERE
 
 --5)
 
--- test czy wpisy siê nie powtarzaj¹ w tabeli primary_results pr
+-- test czy wpisy siÃª nie powtarzajÂ¹ w tabeli primary_results pr
  SELECT
 	pr.fips,
 	pr.candidate,
