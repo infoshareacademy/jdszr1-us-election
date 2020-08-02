@@ -282,6 +282,7 @@ from counties c
   				and county is not null	
   				group by candidate
 
+  				
   --	koniec zapytania nr 2
   ----   wynik  
    	
@@ -783,7 +784,7 @@ select count(1)  as liczba_miast, (select count(1) ogolna_liczba_miast from prim
           17|                548|Democrat                       |    23.5|
          148|               1043|Republican                     |    23.5|   
          
-   dla miast ze srednia wieku dla perc 0.9  glosy perc 0.
+   dla miast ze srednia wieku dla perc 0.9  glosy perc 0.5
          
   liczba_miast|ogolna_liczba_miast|precentyl_glowsow_05_dla_partii|perc_age|
 ------------|-------------------|-------------------------------|--------|
