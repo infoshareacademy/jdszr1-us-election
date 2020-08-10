@@ -53,7 +53,15 @@ def pobierz_opcje():
         opcja = int(input("Podaj numer opcji ubezpieczenia:"))
         return opcja
 
-
+def pobierz_dane():
+    family = input("Czy chcesz się ubezpieczyć z rodziną? y/n:")
+    if family == 'y':
+        age = 'Family Option'
+        opcja = pobierz_opcje()
+    else:
+        age = pobierz_wiek()
+        opcja = 1
+    return (age, opcja)
 
 def pokaz_wynik(state_code, age, opcja, network_df, pa_df, rate_df):
 
@@ -84,4 +92,4 @@ def pokaz_wynik(state_code, age, opcja, network_df, pa_df, rate_df):
     q2_df = new_df[new_df[opcje_dict[opcja]] == q2].head(n=1)
     q3_df = new_df[new_df[opcje_dict[opcja]] == q3].head(n=1)
     final = pd.concat([q0_df,q1_df,q2_df,q3_df])
-    return final
+    return(final.reset_index(drop = True))
