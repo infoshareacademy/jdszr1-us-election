@@ -8,61 +8,63 @@ def choose_state():
         states = [linia.rstrip() for linia in plik]
     print("\nLista state codes:")
     print(states)
-    state_code = input("\nPodaj kod stanu, w którym chcesz się ubezpieczyć:")
-    if state_code in states:
-        return state_code
-    else:
-        print("\nNiepoprawny state code. Wybierz z listy.")
-        state_code = input("Podaj kod stanu, w którym chcesz się ubezpieczyć:")
-        return state_code
+    while True:
+        state_code = input("\nPodaj kod stanu, w którym chcesz się ubezpieczyć:")
+        if state_code in states:
+            return state_code
+            break
+        else:
+            print("\nNiepoprawny state code. Wybierz z listy.")
+            
 
 
 def choose_age():
-    try:
-        age_input = int(input("\nPodaj swój wiek:"))
-    except ValueError:
-        print("\nTo nie jest liczba")
-        age_input = int(input("Podaj swój wiek:"))
+    while True:
+        age_input = input("\nPodaj swój wiek:")
+        if age_input.isnumeric():
+            if int(age_input) <= 20:
+                age = '0-20'                               
+            elif int(age_input) >= 65:
+                age = '65 and over'                
+            else:
+                age = age_input
+            return age
+            break
+        else:
+            print("To nie jest liczba. Podaj liczbę.")
     
-    if age_input <= 20:
-        age = '0-20'
-    elif age_input >= 65:
-        age = '65 and over'
-    else:
-        age = age_input
-    return str(age)
+    
 
 
 def choose_option():
-    opt_dict = {
-        1:"IndividualRate",
-        2:"Couple",
-        3:"PrimarySubscriberAndOneDependent",
-        4:"PrimarySubscriberAndTwoDependents",
-        5:"PrimarySubscriberAndThreeOrMoreDependents",
-        6:"CoupleAndOneDependent",
-        7:"CoupleAndTwoDependents",
-        8:"CoupleAndThreeOrMoreDependents"
-        }
     print("\nPoniższa lista prezentuje dostępne opcje ubezpieczenia rodzinnego:")
     print("\n 2 - Couple\n 3 - Primary Subscriber and One Dependent\n 4 - Primary Subscriber and Two Dependents\n 5 - Primary Subscriber and Three or More Dependents\n 6 - Couple And One Dependent\n 7 - Couple And Two Dependents\n 8 - Couple And Three or More Dependents\n")
-    option = int(input("Z powyższej listy wybierz numer opcji ubezpieczenia:"))
-    if option in range(2,9):
-        return option
-    else:
-        print("\nNie ma takiej opcji. Wybierz numer z listy")
-        option = int(input("Z powyższej listy wybierz numer opcji ubezpieczenia:"))
-        return option
+    while True:
+        option = input("Z powyższej listy wybierz numer opcji ubezpieczenia:")
+        if option.isnumeric():
+            if int(option) in range(2,9):
+                return int(option)
+                break
+            else:
+                print("Nie ma takiej opcji. Wybierz numer z listy.")
+        else:
+            print("\nNie ma takiej opcji. Wybierz numer z listy.")
+            
 
 def get_data():
-    family = input("Czy chcesz się ubezpieczyć z rodziną? y/n:")
-    if family == 'y':
-        age = 'Family Option'
-        option = choose_option()
-    else:
-        age = choose_age()
-        option = 1
-    return (age, option)
+    while True:
+        family = input("Czy chcesz się ubezpieczyć z rodziną? y/n:")
+        if family == 'y' or family == 'n':
+            if family == 'y':
+                age = 'Family Option'
+                option = choose_option()
+            elif family == 'n':
+                age = choose_age()
+                option = 1
+            return (age, option)
+            break
+        else:
+            print("To nie jest poprawna odpowiedź. Wpisz \"y\" dla yes lub \"n\" dla no.")
 
 def show_result(state_code, age, option, network_df, pa_df, rate_df):
 
