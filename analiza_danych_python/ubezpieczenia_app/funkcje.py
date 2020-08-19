@@ -99,4 +99,11 @@ def show_result(state_code, age, option, network_df, pa_df, rate_df):
 
 
 
+def show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015_df, rate2014_df):
+    plan_output = show_result(state_code, age, option, network_df, pa_df, rate2016_df)
+    if plan_output.empty:
+        plan_output = show_result(state_code, age, option, network_df, pa_df, rate2015_df)
+        if plan_output.empty:
+            plan_output = show_result(state_code, age, option, network_df, pa_df, rate2014_df)
+    return plan_output
     
