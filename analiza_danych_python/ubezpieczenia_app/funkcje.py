@@ -96,3 +96,7 @@ def show_result(state_code, age, option, network_df, pa_df, rate_df):
     q3_df = new_df[new_df[opt_dict[option]] == q3].head(n=1)
     final = pd.concat([q0_df,q1_df,q2_df,q3_df])
     return(final.reset_index(drop = True))
+
+
+
+    
