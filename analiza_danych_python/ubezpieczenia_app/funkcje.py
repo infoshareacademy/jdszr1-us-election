@@ -21,7 +21,7 @@ def choose_state():
 def choose_age():
     while True:
         age_input = input("\nPodaj swój wiek:")
-        if age_input.isnumeric():
+        if age_input.isnumeric() and (int(age_input) < 120) and (int(age_input) >= 0) :
             if int(age_input) <= 20:
                 age = '0-20'                               
             elif int(age_input) >= 65:
@@ -31,7 +31,7 @@ def choose_age():
             return age
             break
         else:
-            print("To nie jest liczba. Podaj liczbę.")
+            print("Nieprawidłowa wartość. Podaj liczbę od 0 do 120.")
     
     
 
