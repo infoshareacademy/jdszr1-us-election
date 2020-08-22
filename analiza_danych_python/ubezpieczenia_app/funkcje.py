@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 def choose_state():
@@ -32,8 +34,7 @@ def choose_age():
             break
         else:
             print("Nieprawidłowa wartość. Podaj liczbę od 0 do 120.")
-    
-    
+        
 
 
 def choose_option():
@@ -66,8 +67,10 @@ def get_data():
         else:
             print("To nie jest poprawna odpowiedź. Wpisz \"y\" dla yes lub \"n\" dla no.")
 
-def show_result(state_code, age, option, network_df, pa_df, rate_df):
 
+
+def show_result(state_code, age, option, network_df, pa_df, rate_df):
+    
     opt_dict = {
         1:"IndividualRate",
         2:"Couple",
@@ -100,10 +103,79 @@ def show_result(state_code, age, option, network_df, pa_df, rate_df):
 
 
 def show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015_df, rate2014_df):
-    plan_output = show_result(state_code, age, option, network_df, pa_df, rate2016_df)
-    if plan_output.empty:
-        plan_output = show_result(state_code, age, option, network_df, pa_df, rate2015_df)
-        if plan_output.empty:
-            plan_output = show_result(state_code, age, option, network_df, pa_df, rate2014_df)
+    try:
+        plan_output = show_result(state_code, age, option, network_df, pa_df, rate2016_df)
+    except IndexError:
+        try:
+            plan_output = show_result(state_code, age, option, network_df, pa_df, rate2015_df)
+        except IndexError:
+            try:
+                plan_output = show_result(state_code, age, option, network_df, pa_df, rate2014_df)
+            except IndexError:
+                print("\nNiestety nie dyspozujemy planem ubezpieczeniowym dla podanych kryteriów")
     return plan_output
+    
+
+
+def print_options(plan_output, age, option):
+    #Rysunje wykres wybranych obcji
+
+    opt_dict = {
+        1:"IndividualRate",
+        2:"Couple",
+        3:"PrimarySubscriberAndOneDependent",
+        4:"PrimarySubscriberAndTwoDependents",
+        5:"PrimarySubscriberAndThreeOrMoreDependents",
+        6:"CoupleAndOneDependent",
+        7:"CoupleAndTwoDependents",
+        8:"CoupleAndThreeOrMoreDependents"
+        }
+
+    if age == "Family Option":
+        Rate=plan_output[opt_dict[option]]
+    else:
+        Rate=plan_output["IndividualRate"]
+
+    
+    PlanName = plan_output["PlanMarketingName"] + " - by Issuer - " + plan_output["PlanMarketingName"]
+
+    sns.barplot(x=PlanName, y=Rate)
+    plt.title("Top - Twój najlepszy wybor")
+    plt.xlabel("Nazwa planu ubezpieczeniowego")
+    plt.ylabel("Cena miesieczna $")
+    locs, labels = plt.xticks()
+    plt.setp(labels, rotation=90)
+    
+
+
+
+def choose_benefit(plan_output, df_bcs):
+    print("\n\nW poniższych tabelach zaprezentowane zostały benefity, dla każdego z czterech powyższych planów")
+    input_StandardComponentId = np.array(plan_output['PlanId'])
+    for pl_id in input_StandardComponentId:
+        g = df_bcs[df_bcs.StandardComponentId.eq(pl_id) & df_bcs.BenefitName.str.contains('Dental', na=False) & df_bcs.IsCovered.eq('Covered')]
+        g = g.rename(columns = {'StandardComponentId':'PlanIdBase'})
+        g = g.rename(columns = {'CoinsInnTier1':'ExtraCharge'})
+        df_g = g[['PlanIdBase', 'BenefitName', 'ExtraCharge', 'LimitQty', 'LimitUnit']].head(5)
+        df_g = df_g.fillna("N/A")
+        display(df_g.reset_index(drop= True))
+
+
+
+def best_healthcare(network_df, pa_df, rate2016_df, rate2015_df, rate2014_df, bcs_df):
+    print("Aplikacja służąca do wyboru ubezpieczenia zdrowotnego\n")
+    print("W pierwszym kroku zadamy Ci kilka pytań dotyczących Twoich preferencji odnośnie ubezpieczenia:")
+    
+    state_code = choose_state()
+    age,option = get_data()
+
+    plan_output = show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015_df, rate2014_df)
+    if plan_output.empty:
+        print("\nNiestety nie dyspozujemy planem ubezpieczeniowym dla podanych kryteriów")
+    else:
+        print("\nPoniżej znajdują się wybrane dla Ciebie plany ubezpieczeniowe:")
+    display(plan_output)
+    print_options(plan_output, age, option)
+    choose_benefit(plan_output, bcs_df)
+
     
