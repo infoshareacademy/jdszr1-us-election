@@ -102,19 +102,13 @@ def show_result(state_code, age, option, network_df, pa_df, rate_df):
 
 
 
-def show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015_df, rate2014_df):
+def show_final(state_code, age, option, network_df, pa_df, rate2016_df):
     
     try:
         plan_output = show_result(state_code, age, option, network_df, pa_df, rate2016_df)
     except IndexError:
-        try:
-            plan_output = show_result(state_code, age, option, network_df, pa_df, rate2015_df)
-        except IndexError:
-            try:
-                plan_output = show_result(state_code, age, option, network_df, pa_df, rate2014_df)
-            except IndexError:
-                print("\nNiestety nie dysponujemy planem ubezpieczeniowym dla podanych kryteriów")
-                return pd.DataFrame()
+        print("\nNiestety nie dysponujemy planem ubezpieczeniowym dla podanych kryteriów")
+        return pd.DataFrame()
     return plan_output
     
 
@@ -164,14 +158,15 @@ def choose_benefit(plan_output, df_bcs):
 
 
 
-def best_healthcare(network_df, pa_df, rate2016_df, rate2015_df, rate2014_df, bcs_df):
+def best_healthcare(network_df, pa_df, rate2016_df, bcs_df):
     print("Aplikacja służąca do wyboru ubezpieczenia zdrowotnego\n")
     print("W pierwszym kroku zadamy Ci kilka pytań dotyczących Twoich preferencji odnośnie ubezpieczenia:")
+    
     
     state_code = choose_state()
     age,option = get_data()
 
-    plan_output = show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015_df, rate2014_df)
+    plan_output = show_final(state_code, age, option, network_df, pa_df, rate2016_df)
     if plan_output.empty:
         return
     else:
