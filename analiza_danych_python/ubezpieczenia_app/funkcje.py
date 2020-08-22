@@ -137,12 +137,14 @@ def print_options(plan_output, age, option):
         Rate=plan_output["IndividualRate"]
 
     
-    PlanName = plan_output["PlanMarketingName"] + " by " + plan_output["PlanMarketingName"]
+    PlanName = plan_output["PlanMarketingName"] + " - by Issuer - " + plan_output["PlanMarketingName"]
 
     sns.barplot(x=PlanName, y=Rate)
     plt.title("Top - Twój najlepszy wybor")
     plt.xlabel("Nazwa planu ubezpieczeniowego")
     plt.ylabel("Cena miesieczna $")
+    locs, labels = plt.xticks()
+    plt.setp(labels, rotation=90)
     
 
 
