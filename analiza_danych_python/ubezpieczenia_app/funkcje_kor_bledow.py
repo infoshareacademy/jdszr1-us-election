@@ -18,19 +18,20 @@ def choose_state():
 
 
 def choose_age():
-    try:
-        age_input = int(input("\nPodaj swój wiek:"))
-    except ValueError:
-        print("\nTo nie jest liczba")
-        age_input = int(input("Podaj swój wiek:"))
-    
-    if age_input <= 20:
-        age = '0-20'
-    elif age_input >= 65:
-        age = '65 and over'
-    else:
-        age = age_input
-    return str(age)
+    while True:
+        age_input = input("\nPodaj swój wiek:")
+        if age_input.isnumeric() and int(age_input)<120:
+            if int(age_input) <= 20:
+                age = '0-20'
+            elif int(age_input) >= 65:
+                age = '65 and over'
+            else:
+                age = age_input
+            return age
+            break
+        else:
+            print("co poszlo nie tak . Podaj wiek w latach w zakresie lat 0-120 .")
+
 
 
 def choose_option():
