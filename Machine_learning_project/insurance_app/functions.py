@@ -51,7 +51,7 @@ def values(sex_w, age_w, height_w, weight_w, smoker_w, children_w, region_w):
     return sex, age, bmi, smoker, children, region
 
 def create_df(sex, age, bmi, smoker, children, region):
-    columns = ['age', 'bmi', 'children', 'charges', 'sex_male', 'smoker_yes',
+    columns = ['age', 'bmi', 'children', 'sex_male', 'smoker_yes',
        'region_northeast', 'region_northwest', 'region_southeast',
        'region_southwest']
     index = ['0']
@@ -75,3 +75,26 @@ def create_df(sex, age, bmi, smoker, children, region):
     new_df[region] = 1
     
     return new_df
+
+def train_model(df, df_created):
+    from sklearn.ensemble import RandomForestRegressor
+    df = df.drop(columns=['Unnamed: 0'])
+    x_train = df.drop(columns=['charges'])
+    y_train = df['charges']
+    las = RandomForestRegressor(n_estimators=500, max_depth = 5, max_features = 6, random_state=1, criterion = 'mse')
+    las.fit(x_train, y_train)
+    charge = las.predict(df_created)
+    columns = ['Stawka ubezpieczenia']
+    index = ['0']
+    stawka = pd.DataFrame(index=index, columns=columns)
+    stawka = stawka.fillna(0)
+    stawka['Stawka ubezpieczenia'] = charge.item()
+    return stawka
+
+
+def click_button(button, sex_w, age_w, height_w, weight_w, smoker_w, children_w, region_w):
+    sex, age, bmi, smoker, children, region = values(sex_w, age_w, height_w, weight_w, smoker_w, children_w, region_w)
+    df_created = create_df(sex, age, bmi, smoker, children, region)
+    stawka = train_model(df, df_created)
+    print("Twoja stawka ubezpieczenia:")
+    print(stawka)
