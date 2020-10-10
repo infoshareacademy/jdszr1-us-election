@@ -3,7 +3,7 @@ from IPython.display import display
 import numpy as np
 import pandas as pd
 
-def widgets():
+def widgets_pro():
     import ipywidgets as widgets
     from IPython.display import display
     
@@ -90,11 +90,7 @@ def train_model(df, df_created):
     stawka = stawka.fillna(0)
     stawka['Stawka ubezpieczenia'] = charge.item()
     return stawka
+  
 
+    
 
-def click_button(button, sex_w, age_w, height_w, weight_w, smoker_w, children_w, region_w):
-    sex, age, bmi, smoker, children, region = values(sex_w, age_w, height_w, weight_w, smoker_w, children_w, region_w)
-    df_created = create_df(sex, age, bmi, smoker, children, region)
-    stawka = train_model(df, df_created)
-    print("Twoja stawka ubezpieczenia:")
-    print(stawka)
