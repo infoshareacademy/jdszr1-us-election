@@ -103,6 +103,7 @@ def show_result(state_code, age, option, network_df, pa_df, rate_df):
 
 
 def show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015_df, rate2014_df):
+    
     try:
         plan_output = show_result(state_code, age, option, network_df, pa_df, rate2016_df)
     except IndexError:
@@ -112,7 +113,8 @@ def show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015
             try:
                 plan_output = show_result(state_code, age, option, network_df, pa_df, rate2014_df)
             except IndexError:
-                print("\nNiestety nie dyspozujemy planem ubezpieczeniowym dla podanych kryteriów")
+                print("\nNiestety nie dysponujemy planem ubezpieczeniowym dla podanych kryteriów")
+                return pd.DataFrame()
     return plan_output
     
 
@@ -137,7 +139,7 @@ def print_options(plan_output, age, option):
         Rate=plan_output["IndividualRate"]
 
     
-    PlanName = plan_output["PlanMarketingName"] + " - by Issuer - " + plan_output["PlanMarketingName"]
+    PlanName = plan_output["PlanMarketingName"] + " - by Issuer - " + plan_output["NetworkName"]
 
     sns.barplot(x=PlanName, y=Rate)
     plt.title("Top - Twój najlepszy wybor")
@@ -171,11 +173,11 @@ def best_healthcare(network_df, pa_df, rate2016_df, rate2015_df, rate2014_df, bc
 
     plan_output = show_final(state_code, age, option, network_df, pa_df, rate2016_df, rate2015_df, rate2014_df)
     if plan_output.empty:
-        print("\nNiestety nie dyspozujemy planem ubezpieczeniowym dla podanych kryteriów")
+        return
     else:
         print("\nPoniżej znajdują się wybrane dla Ciebie plany ubezpieczeniowe:")
-    display(plan_output)
-    print_options(plan_output, age, option)
-    choose_benefit(plan_output, bcs_df)
+        display(plan_output)
+        print_options(plan_output, age, option)
+        choose_benefit(plan_output, bcs_df)
 
     
