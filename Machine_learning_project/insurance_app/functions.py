@@ -27,7 +27,7 @@ def widgets_pro():
     smoker_w = widgets.Dropdown(options=["Nie", "Tak"], description='Czy palisz?:')
     display(smoker_w)
     
-    children_w = widgets.Dropdown(options=[0, 1, 2, 3, 4, 5, 6], description='Ilość dzieci:')
+    children_w = widgets.Dropdown(options=[0, 1, 2, 3, 4, 5], description='Liczba dzieci:')
     print('Podaj liczbę swoich dzieci:')
     display(children_w)
     
